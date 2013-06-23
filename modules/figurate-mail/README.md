@@ -5,5 +5,5 @@ Synopsis: Manage configured email services for both incoming and outgoing messag
 
 Services:
 
-# Receive mail from configured IMAP/POP accounts and publish events. 
-# Also process outgoing message queues using SMTP
+1. Receive mail from configured IMAP/POP accounts and publish events. 
+2. Also process outgoing message queues using SMTP
