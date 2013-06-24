@@ -1,0 +1,1 @@
+include "modules:figurate-common", "modules:figurate-mail"
