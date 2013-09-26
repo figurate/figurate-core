@@ -1,1 +1,1 @@
-include "modules:figurate-common", "modules:figurate-mail"
+include 'modules:figurate-common', 'modules:figurate-mail', 'modules:figurate-osgi'
