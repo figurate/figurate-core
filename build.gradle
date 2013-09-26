@@ -9,5 +9,6 @@ allprojects {
 	dependencies {
 	    compile 'org.codehaus.groovy:groovy-all:2.0.7'
 	    compile 'org.apache.felix:org.apache.felix.framework:4.0.2'
+		testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
 	}
 }
