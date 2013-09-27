@@ -5,7 +5,7 @@ import groovy.transform.CompileStatic
 import java.lang.management.ManagementFactory
 import java.util.concurrent.atomic.AtomicInteger
 
-import org.apache.commons.lang.StringUtils
+import org.apache.commons.lang3.StringUtils
 
 @CompileStatic
 class IdGenerator {
