@@ -1,6 +1,7 @@
 allprojects {
 	apply plugin: 'eclipse'
 	apply plugin: 'groovy'
+	apply plugin: 'osgi'
 	
 	repositories {
 		mavenCentral()
