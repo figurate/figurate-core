@@ -1,1 +1,5 @@
-include 'modules:figurate-common', 'modules:figurate-mail', 'modules:figurate-osgi'
+include 'figurate-common', 'figurate-mail', 'figurate-osgi'
+
+rootProject.children.each { module ->
+    module.projectDir = new File("$rootDir/modules/$module.name")
+}
