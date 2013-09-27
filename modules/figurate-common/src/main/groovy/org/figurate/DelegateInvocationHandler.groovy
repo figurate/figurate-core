@@ -1,8 +1,11 @@
 package org.figurate
 
+import groovy.transform.CompileStatic
+
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
 
+@CompileStatic
 class DelegateInvocationHandler implements InvocationHandler {
 
     private final DelegateSelector<?> selector
