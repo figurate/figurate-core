@@ -16,7 +16,8 @@ Third-party modules
 * Gpars (Pl) - Asynchronous/parallel execution support
 * Logback (Lb) - Logging support
 * Modeshape (Mo) - Content repository implementation
-* Camel (Bu) - Apache ESB/Integration
+* Camel (Bs) - Apache ESB/Integration
 * iCal4j (Cl) - iCalendar support
-* mstor (Ms) - Email store
+* mstor (Se) - Email store
+* Aries Blueprint (Si) - Service injection [Docs](http://aries.apache.org/modules/blueprintannotation.html)
 * ..
