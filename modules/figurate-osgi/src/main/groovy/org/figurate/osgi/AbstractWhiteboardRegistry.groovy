@@ -1,4 +1,4 @@
-package org.figurate
+package org.figurate.osgi
 
 import groovy.transform.CompileStatic
 

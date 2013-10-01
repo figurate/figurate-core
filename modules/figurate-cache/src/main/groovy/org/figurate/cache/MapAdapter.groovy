@@ -11,7 +11,8 @@ class MapAdapter implements CacheAdapter {
         this.cache = cache
     }
     
-    <T> T get(CacheEntry entry, Object...args) {
+	@Override
+    public <T> T get(CacheEntry entry, Object...args) {
         final String key = entry.getKey(args)
         T value = cache.get(key)
         if (value == null) {

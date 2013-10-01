@@ -14,12 +14,13 @@ class EhCacheAdapter implements CacheAdapter {
         this.cache = cache
     }
     
-    <T> T get(CacheEntry entry, Object...args) {
+	@Override
+    public <T> T get(CacheEntry entry, Object...args) {
         T value = null
         final String key = entry.getKey(args)
         Element cacheElement = cache.get(key)
         if (cacheElement != null) {
-            value = cacheElement.getValue()
+            value = cacheElement.objectValue
         }
         else {
             value = entry.load(args)
