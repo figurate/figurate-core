@@ -8,7 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue
 @CompileStatic
 class AsyncLogAdapter implements LogAdapter {
 
-    private static final BlockingQueue<Log> QUEUE = new LinkedBlockingQueue<Log>()
+    private static final BlockingQueue<Log> LOG_QUEUE = new LinkedBlockingQueue<Log>()
     
     private static final Thread QUEUE_PROCESSOR = [new QueueProcessor(), "AsyncLogAdapter"]
     static {
@@ -28,12 +28,12 @@ class AsyncLogAdapter implements LogAdapter {
 
     @Override
     void log(LogEntry entry, Object... args) {
-        QUEUE.add(new Log(delegate, entry, null, args))
+        LOG_QUEUE.add(new Log(delegate, entry, null, args))
     }
 
     @Override
     void log(LogEntry entry, Throwable exception, Object... args) {
-        QUEUE.add(new Log(delegate, entry, exception, args))
+        LOG_QUEUE.add(new Log(delegate, entry, exception, args))
     }
 
     private static class Log {
@@ -67,9 +67,9 @@ class AsyncLogAdapter implements LogAdapter {
                 }
             }
             
-            while (!shuttingDown || !QUEUE.isEmpty()) {
+            while (!shuttingDown || !LOG_QUEUE.isEmpty()) {
                 try {
-                    Log log = QUEUE.take()
+                    Log log = LOG_QUEUE.take()
                     if (log.exception != null) {
                         log.logAdapter.log(log.logEntry, log.exception, log.args)
                     }
