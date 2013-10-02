@@ -21,4 +21,5 @@ Third-party modules
 * mstor (Se) - Email store
 * Aries Blueprint (Si) - Service injection [Docs](http://aries.apache.org/modules/blueprintannotation.html)
 * Juicer (Cr) - content repository
+* Shiro (Ac) - security/access control
 * ..
