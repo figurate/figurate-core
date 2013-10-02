@@ -5,8 +5,8 @@ Figurate Modules
 * OSGi (O) - OSGi-specific utility code for figurate
 * Cache (Ca) - Generic in-memory and persistent caching for figurate
 * Log (Ln) - Logging configuration
-* JCR (Cr) - Content repository for persistent storage
-* Mail (Em) - Email support
+* ~~JCR (Cr) - Content repository for persistent storage~~
+* ~~Mail (Em) - Email support~~
 * ..
 
 Third-party modules
@@ -20,4 +20,5 @@ Third-party modules
 * iCal4j (Cl) - iCalendar support
 * mstor (Se) - Email store
 * Aries Blueprint (Si) - Service injection [Docs](http://aries.apache.org/modules/blueprintannotation.html)
+* Juicer (Cr) - content repository
 * ..
