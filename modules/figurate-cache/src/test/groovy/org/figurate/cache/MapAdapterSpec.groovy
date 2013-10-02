@@ -22,7 +22,7 @@ class MapAdapterSpec extends Specification {
 	def 'verify infinispan cache get'() {
 		setup:
 		DefaultCacheManager cacheManager = []
-		Cache cache = cacheManager.cache
+		MapAdapter cache = [cacheManager.cache]
 		
 		when:
 		CacheEntryImpl entry = []
