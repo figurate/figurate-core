@@ -2,6 +2,8 @@ package org.figurate.log
 
 import groovy.transform.CompileStatic
 
+import org.figurate.log.LogEntry.Level
+
 @CompileStatic
 class FormattedLogEntry implements LogEntry {
 
