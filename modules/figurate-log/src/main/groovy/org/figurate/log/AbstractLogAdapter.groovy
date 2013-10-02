@@ -1,7 +1,10 @@
 package org.figurate.log
 
+import groovy.transform.CompileStatic
+
 import org.figurate.log.LogEntry.Level
 
+@CompileStatic
 abstract class AbstractLogAdapter implements LogAdapter {
 
     @Override
