@@ -18,7 +18,7 @@ class BootstrapTest {
 	public Option[] config() {
 		[
 			mavenBundle('org.codehaus.groovy', 'groovy-all', '2.1.7'),
-			bundle('file:/home/fortuna/Development/figurate-core/modules/figurate-common/build/libs/figurate-common.jar'),
+			bundle('file:modules/figurate-common/build/libs/figurate-common.jar'),
 			junitBundles()
 		] as Option[]
 	}
