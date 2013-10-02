@@ -1,8 +1,11 @@
 package org.figurate.log
 
+import groovy.transform.CompileStatic
+
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
 
+@CompileStatic
 class AsyncLogAdapter implements LogAdapter {
 
     private static final BlockingQueue<Log> QUEUE = new LinkedBlockingQueue<Log>()
