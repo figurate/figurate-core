@@ -1,0 +1,36 @@
+<?xml version='1.0'?>
+<book xmlns="http://docbook.org/xml/5.0/xsd/docbook.xsd">
+	<info>
+		<title>Figurate User Guide</title>
+		<title>
+			<author><personname><firstname>Benjamin</firstname> <surname>
+			Fortuna</surname></personname></author>
+		</title>
+		<copyright><year>2013</year><holder>Benjamin 
+		Fortuna</holder></copyright>
+	</info>
+	<preface>
+		<title>Foreword</title>
+		Software continues to increase in complexity as we demand more from 
+		it.
+	</preface>
+	<chapter>
+		<title>Introduction</title>
+		<para>OSGi provides a way to simplify design through 
+		modularity.</para>
+	</chapter>
+	<chapter>
+		<title>Modules</title>
+		<para>The core functionality of Figurate is found in it&apos;s 
+		modules; OSGi bundles provides units of functionality.</para>
+		<section>
+			<title>Commons</title>
+			<para>Commons provide functionality useful in different contexts 
+			such as proxies and parallelisation.</para>
+		</section>
+		<section>
+			<title>Cache</title>
+			<para>Caching functionality is useful in many scenarios.</para>
+		</section>
+	</chapter>
+</book>
