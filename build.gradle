@@ -4,6 +4,12 @@ allprojects {
 	
 	repositories {
 		mavenCentral()
+		ivy {
+			url 'http://repository.amdatu.org/release/'
+			layout 'pattern', {
+				artifact "[artifact]/[artifact]-[revision].[ext]"
+			}
+		}
 	}
 	
 	dependencies {
