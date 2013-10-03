@@ -7,7 +7,8 @@ Figurate Modules
 * Log (Ln) - Logging configuration
 * ~~JCR (Cr) - Content repository for persistent storage~~
 * ~~Mail (Em) - Email support~~
-* Analytics (Au) - Real-time monitory/tracking user behaviour and system performance
+* Analytics (Au) - Real-time monitor/tracking user behaviour
+* Monitor (Si) - Real-time monitoring of system performace (using Javasimon)
 * ..
 
 Third-party modules
@@ -23,5 +24,6 @@ Third-party modules
 * Aries Blueprint (Si) - Service injection [Docs](http://aries.apache.org/modules/blueprintannotation.html)
 * Juicer (Cr) - content repository
 * Shiro (Ac) - security/access control
-* CXF DOSGi (Rs) - restful services
+* ~~CXF DOSGi (Rs) - restful services~~
+* Amdatu (Rs) - restful services [Docs](http://www.amdatu.org/components/web.html)
 * ..
