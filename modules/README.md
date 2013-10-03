@@ -7,6 +7,7 @@ Figurate Modules
 * Log (Ln) - Logging configuration
 * ~~JCR (Cr) - Content repository for persistent storage~~
 * ~~Mail (Em) - Email support~~
+* Analytics (Au) - Real-time monitory/tracking user behaviour and system performance
 * ..
 
 Third-party modules
