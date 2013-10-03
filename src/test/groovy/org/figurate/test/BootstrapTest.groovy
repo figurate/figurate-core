@@ -18,6 +18,7 @@ class BootstrapTest {
 	public Option[] config() {
 		[
 			mavenBundle('org.codehaus.groovy', 'groovy-all', '2.1.7'),
+			bundle('http://repository.amdatu.org/release/org.amdatu.web.rest.jaxrs/org.amdatu.web.rest.jaxrs-1.0.0.jar'),
 			bundle('file:modules/figurate-common/build/libs/figurate-common.jar'),
 			junitBundles()
 		] as Option[]
