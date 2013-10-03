@@ -10,7 +10,7 @@ task copyDeps(type: Copy) {
 
 jar {
   manifest {
-    instruction 'Include-Resource', '@deps/javasimon-core-3.4.0.jar, @deps/javasimon-console-embed-3.4.0.jar'
+    instruction 'Include-Resource', "${buildDir}/deps/javasimon-core-3.4.0.jar, ${buildDir}/deps/javasimon-console-embed-3.4.0.jar"
     instruction '-exportcontents', '!org.javasimon.console*, org.javasimon.*'
   }
 }
