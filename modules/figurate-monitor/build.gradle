@@ -1,0 +1,10 @@
+dependencies {
+  compile 'org.javasimon:javasimon-core:3.4.0'
+  compile 'org.javasimon:javasimon-console-embed:3.4.0'
+}
+
+jar {
+  manifest {
+    instruction 'Export-Package: org.javasimon*'
+  }
+}
