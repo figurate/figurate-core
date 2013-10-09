@@ -26,4 +26,5 @@ Third-party modules
 * Shiro (Ac) - security/access control
 * ~~CXF DOSGi (Rs) - restful services~~
 * Amdatu (Rs) - restful services [Docs](http://www.amdatu.org/components/web.html)
+* Newsagent (Fe) - feed aggregation
 * ..
