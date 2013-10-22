@@ -9,6 +9,7 @@ Figurate Modules
 * ~~Mail (Em) - Email support~~
 * Analytics (Au) - Real-time monitor/tracking user behaviour
 * Monitor (Si) - Real-time monitoring of system performace (using Javasimon)
+* Knowledge Base (Kb) - A set of restful operations supporting CRUD for articles
 * ..
 
 Third-party modules
