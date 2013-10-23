@@ -9,7 +9,7 @@ Figurate Modules
 * ~~Mail (Em) - Email support~~
 * Analytics (Au) - Real-time monitor/tracking user behaviour
 * Monitor (Si) - Real-time monitoring of system performace (using Javasimon)
-* Knowledge Base (Kb) - A set of restful operations supporting CRUD for articles
+* OSLC (Kb) - A set of restful operations supporting Open Services for Lifecycle Management [OSLC](http://open-services.net/uploads/resources/OSLC_Primer_-_Learning_the_concepts_of_OSLC.pdf)
 * ..
 
 Third-party modules
