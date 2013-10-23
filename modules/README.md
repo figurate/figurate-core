@@ -10,6 +10,7 @@ Figurate Modules
 * Analytics (Au) - Real-time monitor/tracking user behaviour
 * Monitor (Si) - Real-time monitoring of system performace (using Javasimon)
 * OSLC (Kb) - A set of restful operations supporting Open Services for Lifecycle Management [OSLC](http://open-services.net/uploads/resources/OSLC_Primer_-_Learning_the_concepts_of_OSLC.pdf)
+* OAuth (Oa) - Support for OAuth provider
 * ..
 
 Third-party modules
