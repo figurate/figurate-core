@@ -20,10 +20,10 @@ class EhCacheAdapter implements CacheAdapter {
         final String key = entry.getKey(args)
         Element cacheElement = cache.get(key)
         if (cacheElement != null) {
-            value = cacheElement.objectValue
+            value = (T) cacheElement.objectValue
         }
         else {
-            value = entry.load(args)
+            value = (T) entry.load(args)
             cache.put(new Element(key, value))
         }
         return value
