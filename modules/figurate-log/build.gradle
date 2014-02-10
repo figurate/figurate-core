@@ -1,6 +1,14 @@
 dependencies {
-  compile 'org.slf4j:slf4j-api:1.7.5'
-  compile 'commons-logging:commons-logging-api:1.1'
-  compile 'org.apache.logging.log4j:log4j-api:2.0-beta9'
-  compile 'org.osgi:org.osgi.compendium:5.0.0'
+    compile 'org.slf4j:slf4j-api:1.7.5'
+    compile 'commons-logging:commons-logging-api:1.1'
+    compile 'org.apache.logging.log4j:log4j-api:2.0-beta9'
+    compile 'org.apache.felix:org.apache.felix.log:1.0.1'
+    compile project(':figurate-osgi')
+}
+
+jar {
+    manifest {
+        instruction 'Import-Package', 'org.apache.commons.logging;resolution:=optional,*'
+        instruction 'Service-Component', 'OSGI-INF/org.figurate.log.osgi.LogServiceAdapter.xml,OSGI-INF/org.figurate.log.osgi.LogAdapterRegistry.xml,OSGI-INF/org.figurate.log.OsgiLogAdapterFactory.xml'
+    }
 }

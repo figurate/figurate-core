@@ -1,4 +1,5 @@
-dependencies {
-  compile 'org.apache.aries.blueprint:org.apache.aries.blueprint:1.1.0'
-  compile 'org.apache.aries.blueprint:org.apache.aries.blueprint.annotation.impl:1.0.0'
+jar {
+    manifest {
+        instruction 'Service-Component', 'OSGI-INF/org.figurate.osgi.Evaluator.xml'
+    }
 }
