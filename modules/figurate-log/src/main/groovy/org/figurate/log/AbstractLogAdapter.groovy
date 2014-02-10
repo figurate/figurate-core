@@ -9,13 +9,12 @@ abstract class AbstractLogAdapter implements LogAdapter {
 
     @Override
     final boolean isLoggable(LogEntry entry) {
-        boolean loggable
+        boolean loggable = false
         switch(entry.level) {
-          case Level.Debug: loggable = isDebugEnabled()
-          case Level.Info: loggable = isInfoEnabled()
-          case Level.Warn: loggable = isWarnEnabled()
-          case Level.Error: loggable = isErrorEnabled()
-          default: loggable = false
+          case Level.Debug: loggable = isDebugEnabled(); break
+          case Level.Info: loggable = isInfoEnabled(); break
+          case Level.Warn: loggable = isWarnEnabled(); break
+          case Level.Error: loggable = isErrorEnabled(); break
         }
         return loggable;
     }
@@ -32,10 +31,10 @@ abstract class AbstractLogAdapter implements LogAdapter {
     final void log(LogEntry entry, Object... args) {
         if (isLoggable(entry)) {
             switch (entry.level) {
-              case Level.Debug: debug(entry.getMessage(args))
-              case Level.Info: info(entry.getMessage(args))
-              case Level.Warn: warn(entry.getMessage(args))
-              case Level.Error: error(entry.getMessage(args))
+              case Level.Debug: debug(entry.getMessage(args)); break
+              case Level.Info: info(entry.getMessage(args)); break
+              case Level.Warn: warn(entry.getMessage(args)); break
+              case Level.Error: error(entry.getMessage(args)); break
             }
         }
     }
@@ -52,10 +51,10 @@ abstract class AbstractLogAdapter implements LogAdapter {
     final void log(LogEntry entry, Throwable exception, Object... args) {
         if (isLoggable(entry)) {
             switch (entry.level) {
-              case Level.Debug: debug(entry.getMessage(args), exception)
-              case Level.Info: info(entry.getMessage(args), exception)
-              case Level.Warn: warn(entry.getMessage(args), exception)
-              case Level.Error: error(entry.getMessage(args), exception)
+              case Level.Debug: debug(entry.getMessage(args), exception); break
+              case Level.Info: info(entry.getMessage(args), exception); break
+              case Level.Warn: warn(entry.getMessage(args), exception); break
+              case Level.Error: error(entry.getMessage(args), exception); break
             }
         }
     }
