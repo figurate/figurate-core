@@ -1,9 +1,9 @@
 package org.figurate.osgi
 
 import groovy.transform.CompileStatic
+import org.apache.felix.scr.annotations.Component
+import org.apache.felix.scr.annotations.Deactivate
 
-import java.util.List
-import java.util.Map
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -17,6 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList
  *            the subscriber type
  */
 @CompileStatic
+@Component(componentAbstract = true)
 abstract class AbstractWhiteboardRegistry<P, S> {
 
     private final List<P> publishers
@@ -76,6 +77,7 @@ abstract class AbstractWhiteboardRegistry<P, S> {
     /**
      * Unregister all subscribers.
      */
+    @Deactivate
     final void unregisterAll() {
         for (S subscriber : subscribers.keySet()) {
             unregisterSubscriber(subscriber, subscribers.get(subscriber))
