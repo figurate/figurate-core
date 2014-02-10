@@ -3,11 +3,11 @@ package org.figurate.log
 import java.util.logging.Level
 import java.util.logging.Logger
 
-public class Jdk14Adapter extends AbstractLogAdapter {
+public class Jdk14LogAdapter extends AbstractLogAdapter {
 
     private final Logger logger
     
-    public Jdk14Adapter(Logger logger) {
+    public Jdk14LogAdapter(Logger logger) {
         this.logger = logger
     }
 

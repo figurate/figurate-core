@@ -1,15 +1,14 @@
 package org.figurate.log
 
 import groovy.transform.CompileStatic
-
-import org.osgi.service.log.LogService;
+import org.osgi.service.log.LogService
 
 @CompileStatic
-class OsgiAdapter extends AbstractLogAdapter {
+class OsgiLogAdapter extends AbstractLogAdapter {
 
     private final LogService logger
     
-    public OsgiAdapter(LogService logger) {
+    public OsgiLogAdapter(LogService logger) {
         this.logger = logger
     }
     

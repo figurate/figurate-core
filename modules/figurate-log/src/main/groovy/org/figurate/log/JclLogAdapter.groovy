@@ -5,11 +5,11 @@ import groovy.transform.CompileStatic
 import org.apache.commons.logging.Log
 
 @CompileStatic
-class JclAdapter extends AbstractLogAdapter {
+class JclLogAdapter extends AbstractLogAdapter {
 
     private final Log logger
     
-    public JclAdapter(Log logger) {
+    public JclLogAdapter(Log logger) {
         this.logger = logger
     }
     

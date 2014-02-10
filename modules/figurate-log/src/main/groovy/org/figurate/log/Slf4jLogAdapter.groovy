@@ -5,11 +5,11 @@ import groovy.transform.CompileStatic
 import org.slf4j.Logger
 
 @CompileStatic
-public class Slf4jAdapter extends AbstractLogAdapter {
+public class Slf4jLogAdapter extends AbstractLogAdapter {
 
     private final Logger logger
     
-    public Slf4jAdapter(Logger logger) {
+    public Slf4jLogAdapter(Logger logger) {
         this.logger = logger
     }
 
