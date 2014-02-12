@@ -4,3 +4,10 @@ dependencies {
   //compile 'javax.ws.rs:javax.ws.rs-api:2.0'
   compile 'javax.ws.rs:jsr311-api:1.1.1'
 }
+
+jar {
+    manifest {
+        instruction 'Service-Component', 'OSGI-INF/org.figurate.ScriptEvaluator.xml'
+        instruction 'Import-Package', 'javax.ws.rs;resolution:=optional,*'
+    }
+}

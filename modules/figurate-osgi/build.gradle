@@ -1,5 +1,0 @@
-jar {
-    manifest {
-        instruction 'Service-Component', 'OSGI-INF/org.figurate.osgi.Evaluator.xml'
-    }
-}
