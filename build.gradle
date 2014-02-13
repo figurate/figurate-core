@@ -1,9 +1,10 @@
 allprojects {
 	apply plugin: 'eclipse'
 	apply plugin: 'groovy'
-	
+
 	repositories {
 		mavenCentral()
+        // amdatu for rest/web services..
 		ivy {
 			url 'http://repository.amdatu.org/release/'
 			layout 'pattern', {
@@ -11,22 +12,67 @@ allprojects {
 			}
 		}
 	}
-	
+
+    configurations {
+        provided
+//        compile.transitive = true
+    }
+
 	dependencies {
 		compile 'org.codehaus.groovy:groovy-all:2.1.7'
+
+        testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+        testCompile 'ch.qos.logback:logback-classic:1.1.1'
 	}
 }
 
 subprojects {
 	apply plugin: 'osgi'
+    apply plugin: 'maven'
+
+    configurations {
+//        provided extendsFrom compile
+        compile.transitive = true
+    }
 
 	dependencies {
-	    compile 'org.apache.felix:org.apache.felix.framework:4.0.2'
-	    testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+//        compile 'org.apache.felix:org.apache.felix.framework:4.0.2'
+
+        compile([
+            'biz.aQute.bnd:bndlib:2.2.0',
+            'org.apache.felix:org.apache.felix.framework:4.0.2',
+            'org.apache.felix:org.apache.felix.scr.annotations:1.9.6',
+            'org.apache.felix:org.apache.felix.scr.ant:1.9.0',
+
+            // start: blueprint dependencies..
+//            'org.apache.aries.blueprint:org.apache.aries.blueprint:1.1.0',
+//            'org.apache.aries.blueprint:org.apache.aries.blueprint.annotation.impl:1.0.0',
+//            'org.apache.aries.proxy:org.apache.aries.proxy.impl:1.0.2',
+//            'asm:asm-all:3.2'
+            // end: blueprint
+        ])
 	}
+
+    ant.properties.src = 'build/classes/main'
+    ant.properties.classes = 'build/classes/main'
+
+    task genscr(dependsOn: compileJava) << {
+        println configurations.compile.asPath
+        ant.taskdef(resource: 'scrtask.properties', classpath: configurations.compile.asPath )
+        ant.scr(srcdir: ant.properties.src, destdir: ant.properties.classes, scanClasses: true, classpath: configurations.compile.asPath)
+    }
+
+    jar.dependsOn(genscr)
+
+//    sourceSets.main.compileClasspath += configurations.provided
 }
 
 dependencies {
+    testCompile([
+        project(':figurate-osgi'),
+        project(':figurate-log'),
+        project(':figurate-common'),
+    ])
 	testCompile 'org.ops4j.pax.exam:pax-exam-container-native:3.3.0'
 	testCompile 'org.ops4j.pax.exam:pax-exam-junit4:3.3.0'
 	testCompile 'org.ops4j.pax.exam:pax-exam-link-mvn:3.3.0'
@@ -34,4 +80,9 @@ dependencies {
 	testCompile 'ch.qos.logback:logback-classic:1.0.13'
 	testCompile 'com.google.guava:guava:15.0'
 	testCompile 'org.apache.felix:org.apache.felix.framework:4.0.2'
+
+    runtime([
+        // adding this to ensure the bundle is in the cache..
+        'org.apache.felix:org.apache.felix.scr:1.8.2'
+    ])
 }
