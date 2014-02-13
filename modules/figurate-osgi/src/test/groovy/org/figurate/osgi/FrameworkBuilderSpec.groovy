@@ -15,14 +15,16 @@ class FrameworkBuilderSpec extends Specification {
         def osgi = new FrameworkBuilder().osgi {
 
             config {[
-                'felix.systembundle.activators': [new BundleActivator() {
-                    void start(BundleContext context) throws Exception {
-                        println "System bundle started"
-                    }
-                    void stop(BundleContext context) throws Exception {
-                        println "System bundle stopped"
-                    }
-                }]]
+                    'org.osgi.framework.storage': 'build/felix-cache',
+                    'org.osgi.framework.storage.clean': 'onFirstInit',
+                    'felix.systembundle.activators': [new BundleActivator() {
+                        void start(BundleContext context) throws Exception {
+                            println "System bundle started"
+                        }
+                        void stop(BundleContext context) throws Exception {
+                            println "System bundle stopped"
+                        }
+                    }]]
             }
 
             bundles {
