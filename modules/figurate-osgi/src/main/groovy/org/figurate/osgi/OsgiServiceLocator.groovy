@@ -4,7 +4,10 @@ import groovy.transform.CompileStatic
 
 import org.osgi.framework.BundleContext
 import org.osgi.framework.Filter
+import org.osgi.framework.FrameworkUtil
 import org.osgi.framework.InvalidSyntaxException
+import org.osgi.framework.ServiceReference
+import org.osgi.framework.ServiceRegistration
 import org.osgi.util.tracker.ServiceTracker
 
 @CompileStatic
@@ -13,7 +16,7 @@ class OsgiServiceLocator implements ServiceLocator {
 	private final BundleContext context
 	
 	private final Map<ServiceName, ServiceTracker> serviceTrackers
-	
+
 	OsgiServiceLocator(BundleContext context) {
 		this.context = context
 		serviceTrackers = new HashMap<ServiceName, ServiceTracker>()
@@ -50,4 +53,14 @@ class OsgiServiceLocator implements ServiceLocator {
 		}
 		serviceTrackers.clear()
 	}
+
+    static <T> T findService(Class<T> serviceClass) {
+        T service = null
+        BundleContext context = FrameworkUtil.getBundle(serviceClass).bundleContext
+        ServiceReference<T> reference = context.getServiceReference(serviceClass)
+        if (reference) {
+            context.getService(reference)
+        }
+        service
+    }
 }
