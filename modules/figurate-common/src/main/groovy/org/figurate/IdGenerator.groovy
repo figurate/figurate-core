@@ -19,7 +19,7 @@ class IdGenerator {
      */
     IdGenerator(String prefix) {
         this.prefix = prefix
-        this.count = []
+        this.count = new AtomicInteger(0)
         this.pid = ManagementFactory.runtimeMXBean.name
     }
     
