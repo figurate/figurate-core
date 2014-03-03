@@ -14,10 +14,10 @@ class MapAdapter implements CacheAdapter {
 	@Override
     public <T> T get(CacheEntry entry, Object...args) {
         final String key = entry.getKey(args)
-        T value = cache.get(key)
+        T value = (T) cache.get(key)
         if (value == null) {
-            value = entry.load(args)
-            cache.put(key, value)
+            value = (T) entry.load(args)
+            cache[key] = value
         }
         return value
     }
