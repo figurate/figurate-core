@@ -49,6 +49,8 @@ class OsgiAdapterSpec extends Specification {
                         // scr
                         'org.apache.felix/org.apache.felix.scr/1.8.2/bundle/c3047d56ee57de0752821fd9c3894dda664f2e37/org.apache.felix.scr-1.8.2.jar',
                         'org.codehaus.groovy/groovy-all/2.1.7/jar/c136ae67c3c40740ae986582baf65ba5c5ce69a0/groovy-all-2.1.7.jar',
+                        'org.codehaus.gpars/gpars/1.1.0/jar/32b489ab3f4e7e5d8282189140591c791917f9cb/gpars-1.1.0.jar',
+                        'org.codehaus.jsr166-mirror/jsr166y/1.7.0/jar/8547fcb1c29b4f8c745c3f49a536aca58fc30f54/jsr166y-1.7.0.jar',
                         'org.fusesource.jansi/jansi/1.11/jar/655c643309c2f45a56a747fda70e3fadf57e9f11/jansi-1.11.jar'
                 ].each {
                     start "file:///Users/fortuna/.gradle/caches/artifacts-26/filestore/$it"
