@@ -31,22 +31,22 @@ class LogServiceAdapter implements LogListener {
 
     private Map<Long, LogAdapter> logAdapters = [:]
 
-//    private org.figurate.log.LogEntry debug = new AnsiLogEntry(level: Debug, template: '%s %s %s %s', colour: CYAN)
-    private org.figurate.log.LogEntry debug = new BundleLogEntry(level: Debug)
+    private org.figurate.log.LogEntry debug = new AnsiLogEntry(level: Debug, template: '%s %s %s %s', colour: CYAN)
+//    private org.figurate.log.LogEntry debug = new BundleLogEntry(level: Debug)
     private org.figurate.log.LogEntry info = new BundleLogEntry(level: Info)
-    private org.figurate.log.LogEntry warning = new BundleLogEntry(level: Warn)
-    private org.figurate.log.LogEntry error = new BundleLogEntry(level: Level.Error)
-//    private org.figurate.log.LogEntry warning = new AnsiLogEntry(level: Warn, template: '%s %s %s %s', colour: YELLOW)
-//    private org.figurate.log.LogEntry error = new AnsiLogEntry(level: Level.Error, template: '%s %s %s %s', colour: RED)
+//    private org.figurate.log.LogEntry warning = new BundleLogEntry(level: Warn)
+//    private org.figurate.log.LogEntry error = new BundleLogEntry(level: Level.Error)
+    private org.figurate.log.LogEntry warning = new AnsiLogEntry(level: Warn, template: '%s %s %s %s', colour: YELLOW)
+    private org.figurate.log.LogEntry error = new AnsiLogEntry(level: Level.Error, template: '%s %s %s %s', colour: RED)
 
     @Activate
     void activate() {
-//        AnsiConsole.systemInstall()
+        AnsiConsole.systemInstall()
     }
 
     @Deactivate
     void deactivate() {
-//        AnsiConsole.systemUninstall()
+        AnsiConsole.systemUninstall()
     }
 
     void bind(LogReaderService logReaderService, Map<String, ?> properties) {
