@@ -3,13 +3,15 @@ dependencies {
     compile 'commons-logging:commons-logging-api:1.1'
     compile 'org.apache.logging.log4j:log4j-api:2.0-beta9'
     compile 'org.apache.felix:org.apache.felix.log:1.0.1'
-    compile project(':figurate-osgi')
     compile 'org.fusesource.jansi:jansi:1.11'
+
+    compile project(':figurate-osgi')
 }
 
 jar {
     manifest {
-        instruction 'Import-Package', 'org.apache.commons.logging;resolution:=optional,*'
+        instruction 'Import-Package', 'org.apache.commons.logging;resolution:=optional,org.fusesource.jansi;resolution:=optional,*'
         instruction 'Service-Component', 'OSGI-INF/org.figurate.log.osgi.LogServiceAdapter.xml,OSGI-INF/org.figurate.log.osgi.LogAdapterRegistry.xml,OSGI-INF/org.figurate.log.OsgiLogAdapterFactory.xml'
+        instruction 'Include-Resource', 'jetty-logging.properties'
     }
 }
