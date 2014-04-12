@@ -17,10 +17,12 @@ class FrameworkBuilder {
     private boolean installBundleMode = false;
     private def installedBundles = []
 
-    Framework osgi(Closure definition) {
-        runClosure definition
-        installedBundles.each { bundle ->
-            bundle.start()
+    Framework osgi(Closure definition, def vars = []) {
+        runClosure definition, vars
+//        GParsExecutorsPool.withPool {
+            installedBundles.each { bundle ->
+                bundle.start()
+//            }
         }
         framework
     }
@@ -41,8 +43,12 @@ class FrameworkBuilder {
             }
         }
 
-        framework.init()
-        framework.start()
+//        GParsExecutorsPool.withPool {
+//            GParsExecutorsPool.executeAsync {
+                framework.init()
+                framework.start()
+//            }
+//        }
     }
 
     def bundles(Closure definition) {
@@ -56,11 +62,23 @@ class FrameworkBuilder {
             installedBundles << framework.bundleContext.installBundle(path)
         }
     }
+    /*
+    def evaluate(BundleContext context, String expression) {
+        OsgiServiceLocator serviceLocator = [context]
+        def evaluator = serviceLocator.findService(new ServiceName() {
+            @Override
+            String getFilter() {
+                return "(objectClass=${ScriptEvaluator.name})"
+            }
+        })
+        evaluator.evaluate expression
+    }
+    */
 
-    private runClosure(Closure closure) {
+    private runClosure(Closure closure, def vars = []) {
         Closure runClone = closure.clone()
         runClone.delegate = this
         runClone.resolveStrategy = Closure.DELEGATE_ONLY
-        runClone()
+        runClone(vars)
     }
 }
