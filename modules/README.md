@@ -8,9 +8,12 @@ Figurate Modules
 * ~~JCR (Cr) - Content repository for persistent storage~~
 * ~~Mail (Em) - Email support~~
 * Analytics (Au) - Real-time monitor/tracking user behaviour
-* Monitor (Si) - Real-time monitoring of system performace (using Javasimon)
+* Monitor (Si) - Real-time monitoring of system performance (using Javasimon)
 * OSLC (Kb) - A set of restful operations supporting Open Services for Lifecycle Management [OSLC](http://open-services.net/uploads/resources/OSLC_Primer_-_Learning_the_concepts_of_OSLC.pdf)
 * OAuth (Oa) - Support for OAuth provider
+* Prevalence (Pr) - In-memory journaling and object persistence [prevayler.org](http://prevayler.org)
+* Persistence (Ps) - Mechanisms for persisting data and creating persistent objects
+* Messaging (Mg) - Queues and transport mechanisms
 * ..
 
 Third-party modules
