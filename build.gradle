@@ -26,6 +26,9 @@ allprojects {
 	}
 }
 
+/**
+ * Configuration for modules only.
+ */
 subprojects {
 	apply plugin: 'osgi'
     apply plugin: 'maven'
@@ -43,8 +46,9 @@ subprojects {
             'org.apache.felix:org.apache.felix.framework:4.0.2',
             'org.apache.felix:org.apache.felix.scr.annotations:1.9.6',
             'org.apache.felix:org.apache.felix.scr.ant:1.9.0',
-                'org.codehaus.gpars:gpars:1.1.0'
-
+            'org.codehaus.gpars:gpars:1.1.0',
+            'org.amdatu.web.rest.doc:org.amdatu.web.rest.doc:1.1.1',
+                'org.amdatu.web.rest.jaxrs:org.amdatu.web.rest.jaxrs:1.0.4',
             // start: blueprint dependencies..
 //            'org.apache.aries.blueprint:org.apache.aries.blueprint:1.1.0',
 //            'org.apache.aries.blueprint:org.apache.aries.blueprint.annotation.impl:1.0.0',
@@ -91,6 +95,9 @@ dependencies {
             'org.apache.felix:org.apache.felix.dependencymanager:3.1.0',
             'org.amdatu.web.rest.jaxrs:org.amdatu.web.rest.jaxrs:1.0.4',
             'org.amdatu.web.rest.wink:org.amdatu.web.rest.wink:1.0.8',
+            'org.amdatu.web.rest.doc.swagger.ui:org.amdatu.web.rest.doc.swagger.ui:1.0.3',
+            'org.amdatu.web.rest.doc.swagger:org.amdatu.web.rest.doc.swagger:1.0.4',
+            'org.amdatu.web.resourcehandler:org.amdatu.web.resourcehandler:1.0.4',
             'org.codehaus.jackson:jackson-jaxrs:1.9.13',
             'org.codehaus.jackson:jackson-core-asl:1.9.13',
             'org.codehaus.jackson:jackson-mapper-asl:1.9.13',
