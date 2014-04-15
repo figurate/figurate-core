@@ -1,6 +1,7 @@
 package org.figurate
 
 import groovy.transform.CompileStatic
+import org.gcontracts.annotations.Requires
 
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.InvocationTargetException
@@ -17,14 +18,14 @@ class RetryInvocationHandler implements InvocationHandler {
      * @param target the invocation target
      * @param retryHandler controls retry on invocation exceptions
      */
+    @Requires({target != null && retryHandler != null})
     public RetryInvocationHandler(Object target, RetryHandler retryHandler) {
         this.target = target
         this.retryHandler = retryHandler
     }
     
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    @Requires({method != null})
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object result = null
         boolean retry = true

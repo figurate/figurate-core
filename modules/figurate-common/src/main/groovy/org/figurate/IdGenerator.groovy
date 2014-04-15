@@ -1,6 +1,7 @@
 package org.figurate
 
 import groovy.transform.CompileStatic
+import org.gcontracts.annotations.Requires
 
 import java.lang.management.ManagementFactory
 import java.util.concurrent.atomic.AtomicInteger
@@ -17,6 +18,7 @@ class IdGenerator {
     /**
      * @param prefix an optional prefix for generated identifiers
      */
+    @Requires({prefix == null || prefix.length() > 0})
     IdGenerator(String prefix) {
         this.prefix = prefix
         this.count = new AtomicInteger(0)

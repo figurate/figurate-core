@@ -1,12 +1,14 @@
 package org.figurate.cache
 
 import groovy.transform.CompileStatic
+import org.gcontracts.annotations.Requires
 
 @CompileStatic
 class MapAdapter implements CacheAdapter {
 
     private final Map<?, ?> cache
-    
+
+    @Requires({cache != null})
     MapAdapter(Map<?, ?> cache) {
         this.cache = cache
     }

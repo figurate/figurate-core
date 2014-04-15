@@ -4,12 +4,14 @@ import groovy.transform.CompileStatic
 
 import net.sf.ehcache.Cache
 import net.sf.ehcache.Element
+import org.gcontracts.annotations.Requires
 
 @CompileStatic
 class EhCacheAdapter implements CacheAdapter {
 
     private final Cache cache
-    
+
+    @Requires({cache != null})
     EhCacheAdapter(Cache cache) {
         this.cache = cache
     }

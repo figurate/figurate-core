@@ -1,5 +1,6 @@
 package org.figurate
 
+import org.gcontracts.PreconditionViolation
 import spock.lang.Specification
 
 /**
@@ -12,5 +13,13 @@ class IdGeneratorSpec extends Specification {
     def "GenerateId"() {
         expect:
         generator.generateId().startsWith('test')
+    }
+
+    def 'Empty string not allowed for prefix'() {
+        when: 'try to create an instance with an empty prefix'
+        new IdGenerator('')
+
+        then:
+        thrown(PreconditionViolation)
     }
 }
