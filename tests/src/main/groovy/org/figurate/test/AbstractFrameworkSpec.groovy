@@ -1,6 +1,6 @@
 package org.figurate.test
 
-import org.figurate.osgi.FrameworkLauncher
+import org.figurate.FrameworkLauncher
 import org.osgi.framework.launch.Framework
 import spock.lang.Shared
 import spock.lang.Specification
