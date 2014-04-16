@@ -1,8 +1,19 @@
-include 'figurate-common', 'figurate-cache', 'figurate-log',
-    'figurate-mail', 'figurate-monitor', 'figurate-osgi'
+def modules = ['figurate-common',
+               'figurate-cache',
+               'figurate-log',
+               'figurate-mail',
+//               'figurate-monitor',
+               'figurate-osgi',
+               'figurate-annotations',
+               'figurate-content']
+
+include(modules as String[])
 
 rootProject.children.each { module ->
     module.projectDir = new File("$rootDir/modules/$module.name")
 }
+
+include 'bootstrap'
+include 'tests'
 
 rootProject.name = 'figurate'
