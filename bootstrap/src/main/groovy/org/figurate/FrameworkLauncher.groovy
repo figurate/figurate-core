@@ -1,8 +1,6 @@
-package org.figurate.osgi
+package org.figurate
 
 import org.osgi.framework.launch.Framework
-
-import java.util.concurrent.TimeUnit
 
 /**
  * Created by fortuna on 7/03/14.

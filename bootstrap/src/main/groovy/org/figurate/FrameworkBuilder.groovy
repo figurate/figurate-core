@@ -1,4 +1,4 @@
-package org.figurate.osgi
+package org.figurate
 
 import org.osgi.framework.launch.Framework
 import org.osgi.framework.launch.FrameworkFactory

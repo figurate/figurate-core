@@ -1,4 +1,4 @@
-package org.figurate.osgi
+package org.figurate
 
 import org.osgi.framework.BundleActivator
 import org.osgi.framework.BundleContext
