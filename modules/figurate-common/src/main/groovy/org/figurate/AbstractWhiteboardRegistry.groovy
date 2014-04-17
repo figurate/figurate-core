@@ -1,4 +1,4 @@
-package org.figurate.osgi
+package org.figurate
 
 import groovy.transform.CompileStatic
 import org.apache.felix.scr.annotations.Component
