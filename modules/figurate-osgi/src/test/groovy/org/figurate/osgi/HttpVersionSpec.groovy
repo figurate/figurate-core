@@ -1,17 +1,7 @@
-package org.figurate.test
+package org.figurate.osgi
 
 import org.figurate.ScriptEvaluator
-
-import org.figurate.osgi.FrameworkBuilder
-import org.figurate.osgi.OsgiServiceLocator
-import org.figurate.osgi.ServiceName
-import org.osgi.framework.BundleActivator
-import org.osgi.framework.BundleContext
-import org.osgi.framework.ServiceRegistration
-import org.osgi.framework.launch.Framework
-import spock.lang.Specification
-
-import java.util.concurrent.TimeUnit
+import org.figurate.test.AbstractFrameworkSpec
 
 /**
  * Created by fortuna on 13/02/14.
@@ -21,7 +11,7 @@ class HttpVersionSpec extends AbstractFrameworkSpec {
     def evaluator
 
     def setupSpec() {
-        loadConfig(new File('/Users/fortuna/Development/figurate-core/src/test/resources/config/HttpVersionSpec.config'))
+        loadConfig(new File('/Users/fortuna/Development/figurate-core/modules/figurate-osgi/src/test/resources/config/HttpVersionSpec.config'))
     }
 
     def 'test version REST method'() {

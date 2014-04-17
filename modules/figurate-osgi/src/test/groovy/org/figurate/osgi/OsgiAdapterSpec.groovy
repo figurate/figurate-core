@@ -1,8 +1,8 @@
-package org.figurate.test
+package org.figurate.osgi
 
 import org.figurate.ScriptEvaluator
 import org.figurate.log.LogAdapter
-import org.figurate.osgi.ServiceName
+import org.figurate.test.AbstractFrameworkSpec
 
 /**
  * Created by fortuna on 30/01/14.
@@ -13,7 +13,7 @@ class OsgiAdapterSpec extends AbstractFrameworkSpec {
     def evaluator
 
     def setupSpec() {
-        loadConfig(new File('/Users/fortuna/Development/figurate-core/src/test/resources/config/OsgiAdapterSpec.config'))
+        loadConfig(new File('/Users/fortuna/Development/figurate-core/modules/figurate-osgi/src/test/resources/config/OsgiAdapterSpec.config'))
     }
 
 //    @Ignore
