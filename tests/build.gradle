@@ -1,5 +1,6 @@
 dependencies {
     compile(['org.spockframework:spock-core:0.7-groovy-2.0',
+            'org.seleniumhq.selenium:selenium-java:2.41.0',
             project(':bootstrap')])
 
     testCompile(['org.ops4j.pax.exam:pax-exam-container-native:3.3.0',

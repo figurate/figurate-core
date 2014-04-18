@@ -8,7 +8,7 @@ import spock.lang.Specification
 /**
  * Created by fortuna on 11/04/14.
  */
-abstract class AbstractFrameworkSpec extends Specification {
+abstract class AbstractFrameworkSpecification extends Specification {
 
     @Shared def config
     @Shared Framework osgi
