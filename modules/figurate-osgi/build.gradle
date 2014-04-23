@@ -1,0 +1,16 @@
+dependencies {
+    compile([
+        'org.amdatu.web.rest.wink:org.amdatu.web.rest.wink:1.0.8',
+            'org.amdatu.web.rest.jaxrs:org.amdatu.web.rest.jaxrs:1.0.4',
+        project(':figurate-common'),
+    ])
+
+    testCompile project(':figurate-log')
+    testCompile project(':tests')
+}
+
+jar {
+    manifest {
+        instruction 'Service-Component', 'OSGI-INF/org.figurate.osgi.http.ServiceInfo.xml,OSGI-INF/org.figurate.osgi.http.BundleInfo.xml'
+    }
+}
