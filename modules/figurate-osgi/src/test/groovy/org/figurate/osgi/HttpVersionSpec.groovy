@@ -1,17 +1,18 @@
 package org.figurate.osgi
 
 import org.figurate.ScriptEvaluator
-import org.figurate.test.AbstractFrameworkSpec
+import org.figurate.test.AbstractFrameworkSpecification
 
 /**
  * Created by fortuna on 13/02/14.
  */
-class HttpVersionSpec extends AbstractFrameworkSpec {
+class HttpVersionSpec extends AbstractFrameworkSpecification {
 
     def evaluator
 
-    def setupSpec() {
-        loadConfig(new File('/Users/fortuna/Development/figurate-core/modules/figurate-osgi/src/test/resources/config/HttpVersionSpec.config'))
+    @Override
+    def getConfigLocation() {
+        return new File('modules/figurate-osgi/src/test/resources/config/HttpVersionSpec.config')
     }
 
     def 'test version REST method'() {

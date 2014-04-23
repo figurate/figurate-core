@@ -20,9 +20,12 @@ abstract class AbstractFrameworkSpecification extends Specification {
         config = shell.evaluate(configFile)
     }
 
-    def setup() {
+    def setupSpec() {
+        loadConfig(getConfigLocation())
         FrameworkLauncher launcher = [config: config]
         launcher.launch(binding)
         osgi = launcher.osgi
     }
+
+    abstract getConfigLocation();
 }
