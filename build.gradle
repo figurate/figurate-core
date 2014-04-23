@@ -16,6 +16,10 @@ allprojects {
     configurations {
         provided
 //        compile.transitive = true
+
+        // exclude google collections as guava is a complete superset of this library..
+        all*.exclude group: 'com.google.collections', module: 'google-collections'
+        all*.exclude group: 'org.ops4j.pax.url', module: 'pax-url-aether'
     }
 
 	dependencies {
