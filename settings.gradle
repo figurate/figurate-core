@@ -2,7 +2,7 @@ def modules = ['figurate-common',
                'figurate-cache',
                'figurate-log',
                'figurate-mail',
-//               'figurate-monitor',
+               'figurate-monitor',
                'figurate-osgi',
                'figurate-annotations',
                'figurate-content']
