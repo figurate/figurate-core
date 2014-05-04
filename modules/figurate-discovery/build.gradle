@@ -1,0 +1,15 @@
+dependencies {
+    compile 'com.github.rickyclarkson:jmdns:3.4.2-r353-1'
+    compile 'javax.servlet:servlet-api:2.5'
+
+    compile project(':figurate-common')
+    testCompile([
+            project(':figurate-osgi')
+    ])
+}
+
+jar {
+    manifest {
+        instruction 'Service-Component', 'OSGI-INF/org.figurate.discovery.endpoint.DiscoveryEndpoint.xml,OSGI-INF/org.figurate.discovery.HttpEndpointDiscovery.xml'
+    }
+}
