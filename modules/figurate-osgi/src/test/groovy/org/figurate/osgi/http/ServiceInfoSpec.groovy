@@ -1,17 +1,13 @@
 package org.figurate.osgi.http
 
-import org.figurate.osgi.ServiceName
-import org.figurate.test.AbstractFrameworkSpecification
+import org.figurate.ServiceName
+import org.figurate.test.AbstractEndpointSpecification
+import org.osgi.service.http.HttpService
 
 /**
  * Created by fortuna on 23/04/14.
  */
-class ServiceInfoSpec extends AbstractFrameworkSpecification {
-
-    @Override
-    def getConfigLocation() {
-        return new File('modules/figurate-osgi/src/test/resources/config/HttpVersionSpec.config')
-    }
+class ServiceInfoSpec extends AbstractEndpointSpecification {
 
     def 'verify service is loaded'() {
         setup:
@@ -28,6 +24,7 @@ class ServiceInfoSpec extends AbstractFrameworkSpecification {
 
     def 'test service info rest endpoint'() {
         expect:
-        new URL('http://localhost:8081/service/all?objectClass=javax.servlet.Servlet').text == '{}'
+//        new URL('http://localhost:8081/service/all?objectClass=javax.servlet.Servlet').text == '{}'
+        getEndpointUrl("/service/all?objectClass=${HttpService.name}").text == '{}'
     }
 }

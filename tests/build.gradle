@@ -1,7 +1,11 @@
 dependencies {
-    compile(['org.spockframework:spock-core:0.7-groovy-2.0',
+    compile([
+            'org.spockframework:spock-core:0.7-groovy-2.0',
             'org.seleniumhq.selenium:selenium-java:2.41.0',
-            project(':bootstrap')])
+            'com.github.rickyclarkson:jmdns:3.4.2-r353-1',
+            project(':bootstrap'),
+            project(':figurate-common')
+    ])
 
     testCompile(['org.ops4j.pax.exam:pax-exam-container-native:3.3.0',
             'org.ops4j.pax.exam:pax-exam-junit4:3.3.0',

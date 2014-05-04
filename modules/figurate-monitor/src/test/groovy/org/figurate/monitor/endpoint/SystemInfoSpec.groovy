@@ -1,17 +1,12 @@
 package org.figurate.monitor.endpoint
 
-import org.figurate.osgi.ServiceName
-import org.figurate.test.AbstractFrameworkSpecification
+import org.figurate.ServiceName
+import org.figurate.test.AbstractEndpointSpecification
 
 /**
  * Created by fortuna on 23/04/14.
  */
-class SystemInfoSpec extends AbstractFrameworkSpecification {
-
-    @Override
-    def getConfigLocation() {
-        return new File('tests/src/test/resources/config/DefaultOSGi.config')
-    }
+class SystemInfoSpec extends AbstractEndpointSpecification {
 
     def 'verify service is loaded'() {
         setup:
@@ -28,16 +23,16 @@ class SystemInfoSpec extends AbstractFrameworkSpecification {
 
     def 'test memory info rest endpoint'() {
         expect:
-        new URL('http://localhost:8081/system/memory').text == '{}'
+        getEndpointUrl("/system/memory").text == '{}'
     }
 
     def 'test cpu info rest endpoint'() {
         expect:
-        new URL('http://localhost:8081/system/cpu').text == '{}'
+        getEndpointUrl("/system/cpu").text == '{}'
     }
 
     def 'test filesystem info rest endpoint'() {
         expect:
-        new URL('http://localhost:8081/system/filesystem').text == '{}'
+        getEndpointUrl("/system/filesystem").text == '{}'
     }
 }
