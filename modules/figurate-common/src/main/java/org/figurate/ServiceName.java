@@ -1,4 +1,4 @@
-package org.figurate.osgi;
+package org.figurate;
 
 public interface ServiceName {
 	
