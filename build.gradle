@@ -15,7 +15,7 @@ allprojects {
 
     configurations {
         provided
-//        compile.transitive = true
+        compile.transitive = true
 
         // exclude google collections as guava is a complete superset of this library..
         all*.exclude group: 'com.google.collections', module: 'google-collections'
@@ -23,7 +23,7 @@ allprojects {
     }
 
 	dependencies {
-		compile(['org.codehaus.groovy:groovy-all:2.3.0-beta-2',
+		compile(['org.codehaus.groovy:groovy-all:2.3.0-rc-1',
                  'org.apache.felix:org.apache.felix.framework:4.0.2'])
 
         testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
@@ -34,7 +34,7 @@ allprojects {
 /**
  * Configuration for modules only.
  */
-subprojects {
+configure(subprojects.findAll {it.name.startsWith 'figurate-'}) {
 	apply plugin: 'osgi'
     apply plugin: 'maven'
 
@@ -61,9 +61,12 @@ subprojects {
             // end: blueprint
 
             'org.gcontracts:gcontracts-core:1.2.12',
+//            'org.javasimon:javasimon-core:3.4.0',
+//            'org.javasimon:javasimon-console-embed:3.4.0',
         ])
+        compile(['core', 'console-embed'].collect {"org.javasimon:javasimon-$it:3.4.0"})
 
-//        testCompile project(':tests')
+        testCompile project(':tests')
 	}
 
     ant.properties.src = 'build/classes/main'
