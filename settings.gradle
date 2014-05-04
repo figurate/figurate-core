@@ -1,11 +1,16 @@
-def modules = ['figurate-common',
-               'figurate-cache',
-               'figurate-log',
-               'figurate-mail',
-               'figurate-monitor',
-               'figurate-osgi',
-               'figurate-annotations',
-               'figurate-content']
+def modules = [
+        'figurate-common',
+       'figurate-cache',
+       'figurate-log',
+       'figurate-mail',
+       'figurate-monitor',
+       'figurate-osgi',
+       'figurate-annotations',
+       'figurate-content',
+        'figurate-authentication',
+//        'figurate-authorisation'
+        'figurate-discovery'
+]
 
 include(modules as String[])
 
