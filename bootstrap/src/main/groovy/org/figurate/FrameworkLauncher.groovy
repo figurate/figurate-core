@@ -15,7 +15,15 @@ class FrameworkLauncher {
     }
 
     static void main(def args) {
+        if (!args) {
+            println usage()
+            System.exit(1)
+        }
         FrameworkLauncher launcher = [config: new GroovyShell(FrameworkLauncher.classLoader).evaluate(new File(args[0]))]
         launcher.launch()
+    }
+
+    static def usage() {
+        "Usage: figurate <config location>"
     }
 }
