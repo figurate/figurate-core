@@ -1,12 +1,9 @@
 dependencies {
-    compile([
-        'org.amdatu.web.rest.wink:org.amdatu.web.rest.wink:1.0.8',
+    compile 'org.amdatu.web.rest.wink:org.amdatu.web.rest.wink:1.0.8',
             'org.amdatu.web.rest.jaxrs:org.amdatu.web.rest.jaxrs:1.0.4',
-        project(':figurate-common'),
-    ])
+        project(':figurate-common')
 
-    testCompile project(':figurate-log')
-    testCompile project(':tests')
+    testCompile 'javax.servlet:servlet-api:2.5'
 }
 
 jar {

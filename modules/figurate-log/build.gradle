@@ -5,7 +5,9 @@ dependencies {
     compile 'org.apache.felix:org.apache.felix.log:1.0.1'
     compile 'org.fusesource.jansi:jansi:1.11'
 
-    compile project(':figurate-osgi')
+    compile project(':figurate-common')
+
+    testCompile project(':figurate-osgi')
 }
 
 jar {
