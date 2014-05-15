@@ -59,7 +59,12 @@ class FrameworkBuilder {
 
     def start(String path) {
         if (installBundleMode) {
-            installedBundles << framework.bundleContext.installBundle(path)
+            try {
+                new URL(path)
+                installedBundles << framework.bundleContext.installBundle(path)
+            } catch (MalformedURLException mue) {
+                installedBundles << framework.bundleContext.installBundle(new File(System.properties['user.dir'], "bundles/$path").toURL() as String)
+            }
         }
     }
     /*
