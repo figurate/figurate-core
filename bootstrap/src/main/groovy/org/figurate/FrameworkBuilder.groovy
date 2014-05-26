@@ -1,13 +1,17 @@
 package org.figurate
 
+import groovy.util.logging.Slf4j
 import org.osgi.framework.launch.Framework
 import org.osgi.framework.launch.FrameworkFactory
+import org.osgi.framework.startlevel.BundleStartLevel
+import org.osgi.framework.startlevel.FrameworkStartLevel
 
 /**
  * A builder to assist with the initialisation of an OSGi framework instance.
  *
  * Created by fortuna on 28/01/14.
  */
+@Slf4j
 class FrameworkBuilder {
 
     Framework framework
@@ -17,13 +21,49 @@ class FrameworkBuilder {
     private boolean installBundleMode = false;
     private def installedBundles = []
 
+    private def startLevelMap = [:]
+
     Framework osgi(Closure definition, def vars = []) {
         runClosure definition, vars
+
+        def startLevels = startLevelMap.keySet().sort()
+
+        // initialise bundle start levels..
+        // Start level must be greater than zero.
+        startLevels.findAll {it > 0}.each { startLevel ->
+            startLevelMap[startLevel].each {
+                def bundle = installedBundles.find {bundle -> bundle.symbolicName == it}
+                if (bundle) {
+                    bundle.adapt(BundleStartLevel).startLevel = startLevel
+                } else {
+                    log.warn "Bundle [$it] not found."
+                }
+            }
+        }
+
 //        GParsExecutorsPool.withPool {
             installedBundles.each { bundle ->
-                bundle.start()
-//            }
+                // don't start the bundle if its start level is less than zero..
+                boolean startBundle = !startLevelMap.find {
+                    it.value.contains(bundle.symbolicName) && it.key < 0
+                }
+                if (startBundle) {
+                    bundle.start()
+                }
+            }
+//        }
+
+        Thread.start {
+            // update start level..
+            // Start level must be greater than zero.
+            startLevels.findAll {it > 0}.each { startLevel ->
+                def frameworkStartLevel = framework.adapt(FrameworkStartLevel)
+                if (frameworkStartLevel.startLevel < startLevel) {
+                    frameworkStartLevel.setStartLevel startLevel
+                }
+            }
         }
+
         framework
     }
 
@@ -57,13 +97,18 @@ class FrameworkBuilder {
         installBundleMode = false
     }
 
+    def startLevels(Closure definition) {
+        startLevelMap = runClosure definition
+
+    }
+
     def start(String path) {
         if (installBundleMode) {
             try {
                 new URL(path)
                 installedBundles << framework.bundleContext.installBundle(path)
             } catch (MalformedURLException mue) {
-                installedBundles << framework.bundleContext.installBundle(new File(System.properties['user.dir'], "bundles/$path").toURL() as String)
+                installedBundles << framework.bundleContext.installBundle(new File(System.properties['user.dir'], path).toURL() as String)
             }
         }
     }
