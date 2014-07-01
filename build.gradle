@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'org.figurate:gradle-figurate-plugin:master-SNAPSHOT',
+                'se.transmode.gradle:gradle-docker:1.1.1'
+    }
+}
 allprojects {
 	apply plugin: 'eclipse'
 	apply plugin: 'groovy'
@@ -11,24 +21,29 @@ allprojects {
 				artifact "[artifact]/[artifact]-[revision].[ext]"
 			}
 		}
+        // temporarily add maven local until figurate plugin is published remotely..
+        mavenLocal()
 	}
 
     configurations {
-        provided
-        compile.transitive = true
-
         // exclude google collections as guava is a complete superset of this library..
         all*.exclude group: 'com.google.collections', module: 'google-collections'
         all*.exclude group: 'org.ops4j.pax.url', module: 'pax-url-aether'
     }
 
 	dependencies {
-		compile(['org.codehaus.groovy:groovy-all:2.3.0-rc-1',
-                 'org.apache.felix:org.apache.felix.framework:4.0.2'])
+		compile 'org.codehaus.groovy:groovy-all:2.3.0-rc-1',
+                 'org.apache.felix:org.apache.felix.framework:4.0.2'
 
-        testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
-        testCompile 'ch.qos.logback:logback-classic:1.1.1'
+        testCompile 'org.spockframework:spock-core:0.7-groovy-2.0',
+                'ch.qos.logback:logback-classic:1.1.1'
 	}
+
+    jar {
+        from(project.rootDir) {
+            include "LICENSE.txt"
+        }
+    }
 }
 
 /**
@@ -37,22 +52,26 @@ allprojects {
 configure(subprojects.findAll {it.name.startsWith 'figurate-'}) {
 	apply plugin: 'osgi'
     apply plugin: 'maven'
+    apply plugin: 'figurate'
 
-    configurations {
-//        provided extendsFrom compile
-        compile.transitive = true
+    repositories {
+        // this is to support loading the build artifact as a bundle dependency.
+        flatDir {
+            dirs "$project.buildDir/libs"
+        }
     }
 
 	dependencies {
 //        compile 'org.apache.felix:org.apache.felix.framework:4.0.2'
+        compile 'org.gcontracts:gcontracts-core:1.2.12'
 
-        compile([
-            'biz.aQute.bnd:bndlib:2.2.0',
+        provided 'biz.aQute.bnd:bndlib:2.2.0',
             'org.apache.felix:org.apache.felix.scr.annotations:1.9.6',
             'org.apache.felix:org.apache.felix.scr.ant:1.9.0',
             'org.codehaus.gpars:gpars:1.1.0',
             'org.amdatu.web.rest.doc:org.amdatu.web.rest.doc:1.1.1',
                 'org.amdatu.web.rest.jaxrs:org.amdatu.web.rest.jaxrs:1.0.4',
+                'javax.servlet:javax.servlet-api:3.1.0'
             // start: blueprint dependencies..
 //            'org.apache.aries.blueprint:org.apache.aries.blueprint:1.1.0',
 //            'org.apache.aries.blueprint:org.apache.aries.blueprint.annotation.impl:1.0.0',
@@ -60,41 +79,98 @@ configure(subprojects.findAll {it.name.startsWith 'figurate-'}) {
 //            'asm:asm-all:3.2'
             // end: blueprint
 
-            'org.gcontracts:gcontracts-core:1.2.12',
 //            'org.javasimon:javasimon-core:3.4.0',
-//            'org.javasimon:javasimon-console-embed:3.4.0',
-        ])
-        compile(['core', 'console-embed'].collect {"org.javasimon:javasimon-$it:3.4.0"})
+//            'org.javasimon:javasimon-console-embed:3.4.0'
+
+        provided(['core', 'console-embed'].collect {"org.javasimon:javasimon-$it:3.4.0"})
 
         testCompile project(':tests')
-	}
+
+        bundle 'org.codehaus.gpars:gpars:1.1.0',
+                'org.codehaus.groovy:groovy-all:2.3.0-rc-1',
+                configurations.constellation$jackson,
+                'org.fusesource.jansi:jansi:1.11',
+                'com.github.rickyclarkson:jmdns:3.4.2-r353-1',
+                configurations.constellation$logback,
+                configurations.constellation$amdatu,
+                'org.apache.felix:org.apache.felix.dependencymanager:3.1.0',
+                'org.apache.felix:org.apache.felix.http.bundle:2.2.2',
+                'org.apache.felix:org.apache.felix.log:1.0.1',
+                'org.apache.felix:org.apache.felix.scr:1.8.2',
+                'org.osgi:org.osgi.compendium:5.0.0',
+                'org.slf4j:slf4j-api:1.7.5',
+                'javax.servlet:javax.servlet-api:3.1.0'
+//            'dnsjava:dnsjava:2.1.6'
+
+//        bundle name: project.name
+    }
 
     ant.properties.src = 'build/classes/main'
     ant.properties.classes = 'build/classes/main'
 
     task genscr(dependsOn: compileJava) << {
         println configurations.compile.asPath
-        ant.taskdef(resource: 'scrtask.properties', classpath: configurations.compile.asPath )
-        ant.scr(srcdir: ant.properties.src, destdir: ant.properties.classes, scanClasses: true, classpath: configurations.compile.asPath)
+        ant.taskdef(resource: 'scrtask.properties', classpath: sourceSets.main.compileClasspath.asPath )
+        ant.scr(srcdir: ant.properties.src, destdir: ant.properties.classes, scanClasses: true, classpath: sourceSets.main.compileClasspath.asPath)
+    }
+
+    launcherConfig {
+        configProps << [
+            'org.osgi.framework.system.packages.extra': 'sun.misc,org.gcontracts,org.gcontracts.annotations,org.gcontracts.generation',
+            'org.osgi.service.http.port'        : '[8080,8099)',
+            'org.apache.felix.http.jettyEnabled': 'true',
+            'org.apache.felix.http.whiteboardEnabled': 'true',
+            'org.apache.felix.http.debug'       : 'true',
+        ]
+    }
+    task testLauncherConfig(type: org.figurate.gradle.plugin.LauncherConfigTask) {
+//        outputDir = project.file("$project.buildDir/test-config")
+        outputDir = "$project.buildDir/test-config"
+        binding.configProps << [
+                'org.osgi.framework.storage'      : "$project.buildDir.name/bundle-cache",
+                'org.osgi.framework.system.packages.extra': 'sun.misc,org.gcontracts,org.gcontracts.annotations,org.gcontracts.generation',
+                'org.osgi.service.http.port'        : '[8080,8099)',
+                'org.osgi.service.http.port.secure'        : '[8443,8499)',
+                'org.apache.felix.http.enable'     : 'true',
+                'org.apache.felix.https.enable'     : 'true',
+                'org.apache.felix.https.keystore.password': 'rgx112',
+                'org.apache.felix.http.jettyEnabled': 'true',
+                'org.apache.felix.http.whiteboardEnabled': 'true',
+                'org.apache.felix.http.debug'       : 'true',
+                'felix.systembundle.activators': ['''new org.osgi.framework.BundleActivator() {
+                                                    public void start(org.osgi.framework.BundleContext context) throws Exception {
+                                                        binding.serviceLocator = new org.figurate.osgi.OsgiServiceLocator(context)
+                                                        binding.bundleContext = context
+                                                    }
+
+                                                    public void stop(org.osgi.framework.BundleContext context) throws Exception {
+                                                    }
+                                                }''']
+        ]
+        startLevels << [
+                100: ['figurate-osgi'],
+                101: ['figurate-common'],
+                102: ['figurate-monitor'],
+//                22: ['figurate-log'],
+                103: ['figurate-discovery']
+        ]
+        bundleDir = "$project.buildDir.name/bundles"
     }
 
     jar.dependsOn(genscr)
+    test.dependsOn(testLauncherConfig)
+    testLauncherConfig.dependsOn(copyBundles)
 
 //    sourceSets.main.compileClasspath += configurations.provided
 }
 
 dependencies {
-    testCompile([
-        project(':figurate-osgi'),
+    testCompile project(':figurate-osgi'),
         project(':figurate-log'),
-        project(':figurate-common'),
-    ])
+        project(':figurate-common')
 
-    runtime([
-            // adding this to ensure the bundle is in the cache..
-            'org.apache.felix:org.apache.felix.scr:1.8.2',
-//            'org.apache.felix:org.apache.felix.http.whiteboard:2.2.2',
-//            'org.apache.felix:org.apache.felix.http.jetty:2.2.2',
+
+    runtime 'org.apache.felix:org.apache.felix.scr:1.8.2',
             'org.apache.felix:org.apache.felix.http.bundle:2.2.2',
             'org.apache.felix:org.apache.felix.dependencymanager:3.1.0',
             'org.amdatu.web.rest.jaxrs:org.amdatu.web.rest.jaxrs:1.0.4',
@@ -106,5 +182,5 @@ dependencies {
             'org.codehaus.jackson:jackson-core-asl:1.9.13',
             'org.codehaus.jackson:jackson-mapper-asl:1.9.13',
             'org.codehaus.jsr166-mirror:jsr166y:1.7.0'
-    ])
+
 }
