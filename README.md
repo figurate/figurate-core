@@ -1,3 +1,5 @@
+[![Build Status](https://drone.io/github.com/figurate/figurate-core/status.png)](https://drone.io/github.com/figurate/figurate-core/latest)
+
 figurate-core
 =============
 
