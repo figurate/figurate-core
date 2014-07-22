@@ -1,0 +1,14 @@
+dependencies {
+    compile project(':figurate-common')
+
+    provided 'commons-codec:commons-codec:1.9'
+
+    testCompile project(':figurate-osgi')
+}
+
+jar {
+    manifest {
+        instruction 'Service-Component', 'OSGI-INF/org.figurate.authentication.endpoint.Credentials.xml,OSGI-INF/org.figurate.auth.BasicAuthSecuredContext.xml,OSGI-INF/org.figurate.auth.BasicAuthFilter.xml'
+        instruction 'Jaas-ModuleClass', 'org.figurate.auth.LoginModuleImpl'
+    }
+}
