@@ -5,9 +5,9 @@ def modules = [
        'figurate-mail',
        'figurate-monitor',
        'figurate-osgi',
-       'figurate-annotations',
-       'figurate-content',
-        'figurate-authentication',
+//       'figurate-annotations',
+//       'figurate-content',
+//        'figurate-authentication',
 //        'figurate-authorisation'
         'figurate-discovery'
 ]

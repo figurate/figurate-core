@@ -2,6 +2,9 @@ buildscript {
     repositories {
         mavenCentral()
         mavenLocal()
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+        }
     }
     dependencies {
         classpath 'org.figurate:gradle-figurate-plugin:master-SNAPSHOT',
