@@ -1,10 +1,12 @@
 package org.figurate
 
 import groovy.util.logging.Slf4j
+import org.osgi.framework.Bundle
 import org.osgi.framework.launch.Framework
 import org.osgi.framework.launch.FrameworkFactory
 import org.osgi.framework.startlevel.BundleStartLevel
 import org.osgi.framework.startlevel.FrameworkStartLevel
+import org.osgi.framework.wiring.BundleRevision
 
 /**
  * A builder to assist with the initialisation of an OSGi framework instance.
@@ -47,13 +49,15 @@ class FrameworkBuilder {
                 boolean startBundle = !startLevelMap.find {
                     it.value.contains(bundle.symbolicName) && it.key < 0
                 }
-                if (startBundle) {
+                // don't start fragment bundles, or bundles not in a resolved state..
+                if (startBundle && (bundle.state == Bundle.RESOLVED || bundle.state == Bundle.INSTALLED)
+                        && (bundle.adapt(BundleRevision.class).getTypes() & BundleRevision.TYPE_FRAGMENT) == 0) {
                     bundle.start()
                 }
             }
 //        }
 
-        Thread.start {
+        def slThread = Thread.start {
             // update start level..
             // Start level must be greater than zero.
             startLevels.findAll {it > 0}.each { startLevel ->
@@ -63,6 +67,7 @@ class FrameworkBuilder {
                 }
             }
         }
+        slThread.join()
 
         framework
     }
@@ -99,17 +104,18 @@ class FrameworkBuilder {
 
     def startLevels(Closure definition) {
         startLevelMap = runClosure definition
-
     }
 
     def start(String path) {
         if (installBundleMode) {
+            def bundle
             try {
                 new URL(path)
-                installedBundles << framework.bundleContext.installBundle(path)
+                bundle = framework.bundleContext.installBundle(path)
             } catch (MalformedURLException mue) {
-                installedBundles << framework.bundleContext.installBundle(new File(System.properties['user.dir'], path).toURL() as String)
+                bundle = framework.bundleContext.installBundle(new File(System.properties['user.dir'], path).toURL() as String)
             }
+            installedBundles << bundle
         }
     }
     /*
