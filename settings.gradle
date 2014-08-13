@@ -9,7 +9,8 @@ def modules = [
 //       'figurate-content',
 //        'figurate-authentication',
 //        'figurate-authorisation'
-        'figurate-discovery'
+        'figurate-discovery',
+        'figurate-security'
 ]
 
 include(modules as String[])
