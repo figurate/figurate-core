@@ -20,6 +20,6 @@ rootProject.children.each { module ->
 }
 
 include 'bootstrap'
-include 'tests'
+include 'test'
 
 rootProject.name = 'figurate'
