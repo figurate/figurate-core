@@ -1,3 +1,9 @@
+ext.pomName = 'Figurate Cache'
+
+description = '''\
+Support for modules that require data caching (e.g. external resources, etc.)
+'''
+
 dependencies {
   compile 'net.sf.ehcache:ehcache:2.7.4'
   compile 'org.infinispan:infinispan-core:6.0.0.Beta2'

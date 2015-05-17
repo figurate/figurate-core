@@ -1,3 +1,9 @@
+ext.pomName = 'Figurate Commons'
+
+description = '''\
+Common patterns and functionality applicable across all modules
+'''
+
 dependencies {
   compile 'org.apache.commons:commons-lang3:3.1',
         'org.codehaus.gpars:gpars:1.1.0'

@@ -1,3 +1,9 @@
+ext.pomName = 'Figurate Security'
+
+description = '''\
+Support for securing endpoints and resources using Authentication, Authorisation, keys and certificates
+'''
+
 dependencies {
     compile project(':figurate-common')
 
