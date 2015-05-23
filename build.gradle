@@ -1,80 +1,93 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url 'http://maven.tmatesoft.com/content/repositories/releases/'
+        }
         mavenLocal()
         maven {
             url 'https://oss.sonatype.org/content/repositories/snapshots'
         }
     }
     dependencies {
-        classpath 'org.figurate:gradle-figurate-plugin:master-SNAPSHOT',
-                'se.transmode.gradle:gradle-docker:1.1.1'
+        classpath 'org.figurate:gradle-figurate-plugin:felix-5-SNAPSHOT',
+                'org.figurate:gradle-constellations-plugin:upgrade-amdatu-dependencies-SNAPSHOT',
+                'org.figurate:gradle-bundle-plugin:felix-5-SNAPSHOT',
+                'se.transmode.gradle:gradle-docker:1.1.1',
+                'au.com.ish.gradle:release:2.2.2'
     }
 }
+
+apply plugin: 'project-report'
+apply plugin: 'release'
+
+ext {
+    osgiVersion = '5.0.0'
+    felixVersion = '5.0.0'
+    groovyVersion = '2.3.9'
+    slf4jVersion = '1.7.5'
+    spockVersion = '0.7-groovy-2.0'
+    jaxrsVersion = '2.0'
+}
+
 allprojects {
-	apply plugin: 'eclipse'
-	apply plugin: 'groovy'
+    apply plugin: 'groovy'
 
-	repositories {
-		mavenCentral()
-        // amdatu for rest/web services..
-		ivy {
-			url 'http://repository.amdatu.org/release/'
-			layout 'pattern', {
-				artifact "[artifact]/[artifact]-[revision].[ext]"
-			}
-		}
-        // temporarily add maven local until figurate plugin is published remotely..
-        mavenLocal()
-	}
-
-    configurations {
-        // exclude google collections as guava is a complete superset of this library..
-        all*.exclude group: 'com.google.collections', module: 'google-collections'
-        all*.exclude group: 'org.ops4j.pax.url', module: 'pax-url-aether'
+    repositories {
+        mavenCentral()
     }
 
-	dependencies {
-		compile 'org.codehaus.groovy:groovy-all:2.3.0-rc-1',
-                 'org.apache.felix:org.apache.felix.framework:4.0.2'
-
-        testCompile 'org.spockframework:spock-core:0.7-groovy-2.0',
-                'ch.qos.logback:logback-classic:1.1.1'
-	}
-
-    jar {
-        from(project.rootDir) {
-            include "LICENSE.txt"
-        }
+    dependencies {
+        compile "org.codehaus.groovy:groovy-all:$groovyVersion"
     }
+}
+
+subprojects {
+    apply from: "${rootDir.absolutePath}/maven-deploy.gradle"
 }
 
 /**
  * Configuration for modules only.
  */
 configure(subprojects.findAll {it.name.startsWith 'figurate-'}) {
-	apply plugin: 'osgi'
-    apply plugin: 'maven'
-    apply plugin: 'figurate'
+    apply plugin: 'bundle'
+//    apply plugin: 'constellations'
 
     repositories {
         // this is to support loading the build artifact as a bundle dependency.
         flatDir {
             dirs "$project.buildDir/libs"
         }
+        // amdatu for rest/web services..
+        ivy {
+            url 'http://repository.amdatu.org/release/'
+            layout 'pattern', {
+                artifact "[artifact]/[artifact]-[revision].[ext]"
+            }
+        }
+        ivy {
+            url 'http://repository.amdatu.org/dependencies/'
+            layout 'pattern', {
+                artifact "[artifact]/[artifact]-[revision].[ext]"
+            }
+        }
+        // temporarily add maven local until figurate plugin is published remotely..
+        mavenLocal()
+        mavenCentral()
     }
 
 	dependencies {
 //        compile 'org.apache.felix:org.apache.felix.framework:4.0.2'
-        compile 'org.gcontracts:gcontracts-core:1.2.12'
-
-        provided 'biz.aQute.bnd:bndlib:2.2.0',
+//        compile 'org.gcontracts:gcontracts-core:1.2.12'
+        /*
+        compile 'biz.aQute.bnd:bndlib:2.2.0',
             'org.apache.felix:org.apache.felix.scr.annotations:1.9.6',
             'org.apache.felix:org.apache.felix.scr.ant:1.9.0',
             'org.codehaus.gpars:gpars:1.1.0',
             'org.amdatu.web.rest.doc:org.amdatu.web.rest.doc:1.1.1',
                 'org.amdatu.web.rest.jaxrs:org.amdatu.web.rest.jaxrs:1.0.4',
                 'javax.servlet:javax.servlet-api:3.1.0'
+                */
             // start: blueprint dependencies..
 //            'org.apache.aries.blueprint:org.apache.aries.blueprint:1.1.0',
 //            'org.apache.aries.blueprint:org.apache.aries.blueprint.annotation.impl:1.0.0',
@@ -85,38 +98,29 @@ configure(subprojects.findAll {it.name.startsWith 'figurate-'}) {
 //            'org.javasimon:javasimon-core:3.4.0',
 //            'org.javasimon:javasimon-console-embed:3.4.0'
 
-        provided(['core', 'console-embed'].collect {"org.javasimon:javasimon-$it:3.4.0"})
+//        compile(['core', 'console-embed'].collect {"org.javasimon:javasimon-$it:3.4.0"})
 
-        testCompile project(':tests')
-
-        bundle 'org.codehaus.gpars:gpars:1.1.0',
-                'org.codehaus.groovy:groovy-all:2.3.0-rc-1',
-                configurations.constellation$jackson,
+//        testCompile project(':test')
+        /*
+        compile 'org.codehaus.gpars:gpars:1.1.0',
+                "org.codehaus.groovy:groovy-all:$groovyVersion",
+//                configurations.constellation$jackson,
                 'org.fusesource.jansi:jansi:1.11',
                 'com.github.rickyclarkson:jmdns:3.4.2-r353-1',
-                configurations.constellation$logback,
-                configurations.constellation$amdatu,
+//                configurations.constellation$logback,
+//                configurations.constellation$rest,
                 'org.apache.felix:org.apache.felix.dependencymanager:3.1.0',
                 'org.apache.felix:org.apache.felix.http.bundle:2.2.2',
                 'org.apache.felix:org.apache.felix.log:1.0.1',
                 'org.apache.felix:org.apache.felix.scr:1.8.2',
                 'org.osgi:org.osgi.compendium:5.0.0',
-                'org.slf4j:slf4j-api:1.7.5',
+                "org.slf4j:slf4j-api:$slf4jVersion",
                 'javax.servlet:javax.servlet-api:3.1.0'
 //            'dnsjava:dnsjava:2.1.6'
-
+          */
 //        bundle name: project.name
     }
-
-    ant.properties.src = 'build/classes/main'
-    ant.properties.classes = 'build/classes/main'
-
-    task genscr(dependsOn: compileJava) << {
-        println configurations.compile.asPath
-        ant.taskdef(resource: 'scrtask.properties', classpath: sourceSets.main.compileClasspath.asPath )
-        ant.scr(srcdir: ant.properties.src, destdir: ant.properties.classes, scanClasses: true, classpath: sourceSets.main.compileClasspath.asPath)
-    }
-
+    /*
     launcherConfig {
         configProps << [
             'org.osgi.framework.system.packages.extra': 'sun.misc,org.gcontracts,org.gcontracts.annotations,org.gcontracts.generation',
@@ -128,7 +132,14 @@ configure(subprojects.findAll {it.name.startsWith 'figurate-'}) {
     }
     task testLauncherConfig(type: org.figurate.gradle.plugin.LauncherConfigTask) {
 //        outputDir = project.file("$project.buildDir/test-config")
-        outputDir = "$project.buildDir/test-config"
+        outputDir = file("$project.buildDir/test-config")
+        startLevels << [
+                100: ['figurate-osgi'],
+                101: ['figurate-common'],
+                102: ['figurate-monitor'],
+//                22: ['figurate-log'],
+                103: ['figurate-discovery']
+        ]
         binding.configProps << [
                 'org.osgi.framework.storage'      : "$project.buildDir.name/bundle-cache",
                 'org.osgi.framework.system.packages.extra': 'sun.misc,org.gcontracts,org.gcontracts.annotations,org.gcontracts.generation',
@@ -150,28 +161,15 @@ configure(subprojects.findAll {it.name.startsWith 'figurate-'}) {
                                                     }
                                                 }''']
         ]
-        startLevels << [
-                100: ['figurate-osgi'],
-                101: ['figurate-common'],
-                102: ['figurate-monitor'],
-//                22: ['figurate-log'],
-                103: ['figurate-discovery']
-        ]
         bundleDir = "$project.buildDir.name/bundles"
     }
-
-    jar.dependsOn(genscr)
-    test.dependsOn(testLauncherConfig)
-    testLauncherConfig.dependsOn(copyBundles)
+    */
 
 //    sourceSets.main.compileClasspath += configurations.provided
 }
 
 dependencies {
-    testCompile project(':figurate-osgi'),
-        project(':figurate-log'),
-        project(':figurate-common')
-
+    testCompile project(':figurate-osgi'), project(':figurate-log'), project(':figurate-common')
 
     runtime 'org.apache.felix:org.apache.felix.scr:1.8.2',
             'org.apache.felix:org.apache.felix.http.bundle:2.2.2',

@@ -1,0 +1,89 @@
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+jar {
+    // Include project license in all artifacts
+    from(project.rootDir) {
+        include "LICENSE.txt"
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+
+signing {
+    required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+ext.pomName = ''
+
+afterEvaluate {
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
+                }
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
+                }
+
+                pom.project {
+                    name pomName
+                    packaging 'jar'
+                    description project.description
+                    url 'http://figurate.org/'
+
+                    scm {
+                        url 'https://github.com/figurate/figurate-core'
+                        connection 'scm:git@github.com:figurate/figurate-core.git'
+                        developerConnection 'scm:git@github.com:figurate/figurate-core.git'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Apache Software License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'fortuna'
+                            name 'Ben Fortuna'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+release {
+    failOnSnapshotDependencies = true
+    // allow modifications due to bug in the release plugin..
+    allowLocalModifications = true
+    releaseDryRun = releaseDryRun
+    scm = 'git'
+}
+
+group = 'org.figurate'
+version = release.projectVersion
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
