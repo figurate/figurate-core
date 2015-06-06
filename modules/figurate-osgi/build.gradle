@@ -1,13 +1,17 @@
-dependencies {
-    compile 'org.amdatu.web.rest.wink:org.amdatu.web.rest.wink:1.0.8',
-            'org.amdatu.web.rest.jaxrs:org.amdatu.web.rest.jaxrs:1.0.4',
-        project(':figurate-common')
+ext.pomName = 'Figurate OSGi'
 
-    testCompile 'javax.servlet:servlet-api:2.5'
+description = '''\
+Common OSGi-specific patterns applicable across all modules
+'''
+
+dependencies {
+    compile "javax.ws.rs:javax.ws.rs-api:$jaxrsVersion", 'org.amdatu.web.rest.doc:org.amdatu.web.rest.doc:1.1.1'
+
+    compile project(':figurate-common'), "org.slf4j:slf4j-api:$slf4jVersion"
 }
 
 jar {
     manifest {
-        instruction 'Service-Component', 'OSGI-INF/org.figurate.osgi.http.ServiceInfo.xml,OSGI-INF/org.figurate.osgi.http.BundleInfo.xml'
+        instruction 'Service-Component', 'OSGI-INF/org.figurate.osgi.http.ServiceInfo.xml,OSGI-INF/org.figurate.osgi.http.BundleInfo.xml,OSGI-INF/org.figurate.osgi.ConfigurationResolver.xml'
     }
 }

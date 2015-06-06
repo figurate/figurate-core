@@ -5,5 +5,11 @@ A collection of bootstrap classes for loading and configuring OSGi constellation
 '''
 
 dependencies {
-    compile 'org.slf4j:slf4j-api:1.7.5'
+    compile "org.osgi:org.osgi.core:$osgiVersion", "org.osgi:org.osgi.compendium:$osgiVersion",
+            "org.slf4j:slf4j-api:$slf4jVersion"
+
+    testCompile "org.spockframework:spock-core:$spockVersion"
+
+    // required for testing framework launching
+    testCompile 'org.apache.felix:org.apache.felix.framework:4.0.2'
 }

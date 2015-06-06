@@ -1,29 +1,34 @@
-dependencies {
-    compile(['org.javasimon:javasimon-core:3.4.0',
-           'org.javasimon:javasimon-console-embed:3.4.0'
-    ])
+ext.pomName = 'Figurate Monitoring'
 
-    compile([
-            'org.amdatu.web.rest.wink:org.amdatu.web.rest.wink:1.0.8',
-            'org.amdatu.web.rest.jaxrs:org.amdatu.web.rest.jaxrs:1.0.4',
-            project(':figurate-common'),
-    ])
+description = '''\
+Support for health checks and performance monitoring (micro-benchmarking)
+'''
 
-    testCompile([
-            project(':tests'),
-            project(':figurate-osgi'),
-    ])
+configurations {
+    embed
 }
 
-//task copyDeps(type: com.sun.org.apache.xalan.internal.xsltc.compiler.Copy) {
-//    from configurations.runtime
-//    into "${buildDir}/deps"
-//}
+dependencies {
+    embed 'org.javasimon:javasimon-core:3.4.0',
+           'org.javasimon:javasimon-console-embed:3.4.0'
+
+    compile 'org.javasimon:javasimon-core:3.4.0',
+           'org.javasimon:javasimon-console-embed:3.4.0'
+
+    compile "javax.ws.rs:javax.ws.rs-api:$jaxrsVersion", 'org.amdatu.web.rest.doc:org.amdatu.web.rest.doc:1.1.1'
+
+    compile project(':figurate-common')
+
+    testCompile project(':figurate-osgi')
+}
 
 jar {
+    into('lib') {
+        from configurations.embed
+    }
   manifest {
-    instruction 'Include-Resource', "${buildDir}/deps/javasimon-core-3.4.0.jar, ${buildDir}/deps/javasimon-console-embed-3.4.0.jar"
-    instruction '-exportcontents', '!org.javasimon.console*, org.javasimon.*'
-    instruction 'Service-Component', 'OSGI-INF/org.figurate.monitor.endpoint.SystemInfo.xml'
+    instruction 'Bundle-ClassPath', '., lib/javasimon-core-3.4.0.jar, lib/javasimon-console-embed-3.4.0.jar'
+    instruction 'Export-Package', 'org.javasimon*,*'
+    instruction 'Service-Component', 'OSGI-INF/org.figurate.monitor.endpoint.SystemInfo.xml,OSGI-INF/org.javasimon.console.SimonConsoleServlet.xml'
   }
 }

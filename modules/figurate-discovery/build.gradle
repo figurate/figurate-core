@@ -1,15 +1,84 @@
+apply plugin: 'figurate'
+apply plugin: 'constellations'
+
+ext.pomName = 'Figurate Discovery'
+
+description = '''\
+Module discovery using Multicast DNS. \
+Alleviates the need for endpoint configuration (i.e. host IP address, port, etc.)
+'''
+
 dependencies {
-    compile 'com.github.rickyclarkson:jmdns:3.4.2-r353-1'
-    compile 'javax.servlet:servlet-api:2.5'
+    compile 'com.github.rickyclarkson:jmdns:3.4.2-r353-1',
+            files('/Users/fortuna/Development/third-party/dnsjava/org.xbill.dns_2.1.6.jar')
 
     compile project(':figurate-common')
-    testCompile([
-            project(':figurate-osgi')
-    ])
+
+//    compile "javax.ws.rs:javax.ws.rs-api:$jaxrsVersion", 'org.amdatu.web.rest.doc:org.amdatu.web.rest.doc:1.1.1'
+    compile 'javax.ws.rs:jsr311-api:1.1.1', 'org.amdatu.web.rest.doc:org.amdatu.web.rest.doc:1.1.1'
+
+    testCompile project(':figurate-osgi')
+
+    testCompile "org.spockframework:spock-core:$spockVersion", project(':test')
+    // required for testing framework launching
+    testCompile "org.apache.felix:org.apache.felix.framework:$felixVersion"
+
+    bundle configurations.constellation$felix, // OSGi runtime
+            configurations.constellation$webconsole, // OSGi dashboard application
+            configurations.constellation$http, // embedded Jetty HTTP server
+            configurations.constellation$rest, // REST support from Amdatu
+            configurations.constellation$jackson, // JSON databinding support for the REST framework
+            configurations.constellation$logback, // logging framework
+            'org.codehaus.groovy:groovy-all:2.4.3', // Groovy runtime
+            'com.github.rickyclarkson:jmdns:3.4.2-r353-1'
+
+    runtime configurations.constellation$logback, 'org.gcontracts:gcontracts-core:1.2.12'
 }
+
+task testLauncherConfig(type: org.figurate.gradle.plugin.LauncherConfigTask) {
+    outputDir = project.file("$project.buildDir/test-conf")
+    bundleDir = "$project.buildDir.name/bundles"
+    configProps << [
+            'org.osgi.framework.storage'      : "$project.buildDir.name/bundle-cache",
+            'org.osgi.framework.system.packages.extra': 'sun.misc,org.xml.sax*,javax.xml*,javax.*,org.gcontracts,org.gcontracts.annotations,org.gcontracts.generation',
+            'org.osgi.framework.system.capabilities.extra': "osgi.ee; osgi.ee=\"JavaSE\";version:List=\"1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8\"",
+            'org.osgi.framework.storage.clean':'onFirstInit',
+            // use the next available port from 8080 onwards
+            'org.osgi.service.http.port'        : '[8080,8099)',
+            'org.osgi.service.http.port.secure':'[8443,8499)',
+            'org.apache.felix.http.enable':'true',
+            'org.apache.felix.https.enable':'true',
+            'org.apache.felix.https.keystore.password':'rgx112',
+            'org.apache.felix.http.jettyEnabled': 'true',
+            'org.apache.felix.http.whiteboardEnabled': 'true',
+            'org.apache.felix.http.debug'       : 'true',
+            'felix.systembundle.activators': ['''
+new org.osgi.framework.BundleActivator() {
+    public void start(org.osgi.framework.BundleContext context) throws Exception {
+        org.figurate.FrameworkStatusListener listener = []
+        context.addFrameworkListener listener
+        binding.frameworkStarted = listener.frameworkStarted
+
+        org.figurate.ServiceStatusListener listener2 = []
+        context.addServiceListener listener2, '(objectClass=org.osgi.service.http.HttpService)'
+        binding.serviceAvailable = listener2.serviceAvailable
+
+        binding.bundleContext = context
+    }
+
+    public void stop(org.osgi.framework.BundleContext context) throws Exception {
+    }
+}
+''']
+    ]
+}
+
+test.dependsOn(testLauncherConfig)
+testLauncherConfig.dependsOn(copyBundles)
 
 jar {
     manifest {
+        instruction 'Import-Package', 'org.xbill.DNS;resolution:=optional,*'
         instruction 'Service-Component', 'OSGI-INF/org.figurate.discovery.endpoint.DiscoveryEndpoint.xml,OSGI-INF/org.figurate.discovery.HttpEndpointDiscovery.xml'
     }
 }

@@ -5,10 +5,12 @@ Common patterns and functionality applicable across all modules
 '''
 
 dependencies {
-  compile 'org.apache.commons:commons-lang3:3.1',
-        'org.codehaus.gpars:gpars:1.1.0'
-  //compile 'javax.ws.rs:javax.ws.rs-api:2.0'
-//  compile 'javax.ws.rs:jsr311-api:1.1.1'
+  compile 'org.apache.commons:commons-lang3:3.1', 'org.codehaus.gpars:gpars:1.1.0',
+          'org.gcontracts:gcontracts-core:1.2.12'
+
+  compile "javax.ws.rs:javax.ws.rs-api:$jaxrsVersion"
+
+    testCompile "org.spockframework:spock-core:$spockVersion"
 }
 
 jar {

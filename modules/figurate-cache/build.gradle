@@ -5,6 +5,9 @@ Support for modules that require data caching (e.g. external resources, etc.)
 '''
 
 dependencies {
-  compile 'net.sf.ehcache:ehcache:2.7.4'
-  compile 'org.infinispan:infinispan-core:6.0.0.Beta2'
+  compile 'net.sf.ehcache:ehcache:2.7.4', 'org.infinispan:infinispan-core:6.0.0.Beta2'
+
+  compile 'org.gcontracts:gcontracts-core:1.2.12'
+
+  testCompile "org.spockframework:spock-core:$spockVersion"
 }
