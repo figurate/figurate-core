@@ -6,10 +6,10 @@ import org.gcontracts.annotations.Requires
 @CompileStatic
 class MapAdapter implements CacheAdapter {
 
-    private final Map<?, ?> cache
+    private final Map<String, Object> cache
 
     @Requires({cache != null})
-    MapAdapter(Map<?, ?> cache) {
+    MapAdapter(Map<String, Object> cache) {
         this.cache = cache
     }
     
@@ -19,7 +19,7 @@ class MapAdapter implements CacheAdapter {
         T value = (T) cache.get(key)
         if (value == null) {
             value = (T) entry.load(args)
-            cache[key] = value
+            cache.put(key, (Object) value)
         }
         return value
     }
