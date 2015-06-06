@@ -1,0 +1,16 @@
+ext.pomName = 'Figurate Test Framework'
+
+description = '''\
+Test patterns and utilities for feature verification
+'''
+
+dependencies {
+    compile "org.spockframework:spock-core:$spockVersion",
+            'org.seleniumhq.selenium:selenium-java:2.41.0',
+            'org.gebish:geb-spock:0.9.2',
+            'com.github.detro:phantomjsdriver:1.2.0',
+            'com.github.rickyclarkson:jmdns:3.4.2-r353-1',
+            project(':bootstrap')
+
+    testCompile gradleApi()
+}
